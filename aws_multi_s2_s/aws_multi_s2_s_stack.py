@@ -4,7 +4,7 @@ from aws_cdk import Stack
 from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_iam as iam
 from constructs import Construct
-from aws_multi_s2_s.parameters import cidr_mask, vpc_cidr, destinationCIDR
+from aws_multi_s2_s.parameters import cidr_mask, vpc_cidr, destinationCIDR, VPNGWinstance0_pip, VPNGWinstance1_pip, VPNconnetion1Tunnel1, VPNconnetion1Tunnel2, VPNconnetion2Tunnel1, VPNconnetion2Tunnel2
 
 class CustomVpcStack(Stack):        
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -31,28 +31,28 @@ class CustomVpcStack(Stack):
         )
 ### ----- vpn connection 1-----
         AWSVGWToAzureInstance0 = custom_vpc.add_vpn_connection("AWSVGWToAzureInstance0",
-            ip = "20.223.100.224", # CGW IP
+            ip = VPNGWinstance0_pip, # CGW IP
             # asn=65020,
             tunnel_options=[
                 ec2.VpnTunnelOption(
-                tunnel_inside_cidr="169.254.21.0/30"
+                tunnel_inside_cidr=VPNconnetion1Tunnel1
             ),
                 ec2.VpnTunnelOption(
-                tunnel_inside_cidr="169.254.22.0/30"                   
+                tunnel_inside_cidr=VPNconnetion1Tunnel2              
             )
         ]
     )
 
 ### -----VPN bgp connection 2 -----
         AWSVGWToAzureInstance1 = custom_vpc.add_vpn_connection("AWSVGWToAzureInstance1",
-            ip="20.223.101.71", # CGW IP
+            ip= VPNGWinstance1_pip, # CGW IP
             asn=65000,
             tunnel_options=[
                 ec2.VpnTunnelOption(
-                tunnel_inside_cidr="169.254.21.4/30"
+                tunnel_inside_cidr=VPNconnetion2Tunnel1
             ),
                 ec2.VpnTunnelOption(
-                tunnel_inside_cidr="169.254.22.4/30"                   
+                tunnel_inside_cidr=VPNconnetion2Tunnel2              
             )
         ]
     )
