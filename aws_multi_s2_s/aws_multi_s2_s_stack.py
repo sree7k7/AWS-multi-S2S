@@ -129,10 +129,10 @@ class CustomVpcStack(Stack):
         instance = ec2.Instance(
             self,
             'Instance',
-            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE4_GRAVITON, ec2.InstanceSize.SMALL),
+            instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE3_AMD, ec2.InstanceSize.SMALL),
             vpc=custom_vpc,
             machine_image=ec2.MachineImage.latest_amazon_linux(
-                generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2022
+                generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
             ),
             security_group=sg_group,
             role=role,
